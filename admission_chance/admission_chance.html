@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 350px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+        }
+        .btn {
+            background: #ff416c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .btn:hover {
+            background: #ff4b2b;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="form-section">
+        <h2>Enter Your Details</h2>
+        <form id="predictor-form">
+            <label>College Name:</label>
+            <input type="text" id="college-name" placeholder="Enter college name" required>
+            
+            <label>Exam Score:</label>
+            <input type="number" id="exam-score" placeholder="Enter your score" required>
+    
+            <label>Select Course:</label>
+            <select id="course">
+                <option value="engineering">Engineering</option>
+                <option value="medical">Medical</option>
+                <option value="business">Business</option>
+            </select>
+            
+            <label>Upload Marksheet:</label>
+            <input type="file" id="document" required>
+            <p id="file-name"></p>
+    
+            <button class="btn" type="submit">Predict Admission</button>
+        </form>
+    
+        <div id="prediction-result"></div>
+    </div>
+    
+    <script>
+        document.getElementById("document").addEventListener("change", function() {
+            document.getElementById("file-name").innerText = "Uploaded: " + this.files[0].name;
+        });
+    
+        document.getElementById("predictor-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let score = parseInt(document.getElementById("exam-score").value);
+            let college = document.getElementById("college-name").value;
+            let result = "";
+    
+            if (score >= 90) {
+                result = `High chance of admission in ${college}.`;
+            } else if (score >= 75) {
+                result = `Moderate chance of admission in ${college}.`;
+            } else {
+                result = `Low chance of admission in ${college}.`;
+            }
+    
+            document.getElementById("prediction-result").innerHTML = `<h3>${result}</h3>`;
+        });
+    </script>
+</body>
+</html>

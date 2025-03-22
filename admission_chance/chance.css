@@ -1,0 +1,36 @@
+/* Form Section */
+.container {
+    max-width: 500px;
+    margin: 60px auto;
+    background: #1f4068;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container input, .container select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#prediction-result {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00d4ff;
+}
+
+/* Footer */
+footer {
+    background: #1f4068;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+}
+div {
+    background-color: #00d4ff;
+}

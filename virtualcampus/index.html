@@ -1,0 +1,213 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Campus Tour</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            text-align: center;
+        }
+        .container {
+            margin: 20px auto;
+            width: 50%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            cursor: pointer;
+        }
+        .card {
+            display: none;
+            margin: 20px auto;
+            width: 80%;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter College Name</h2>
+        <input type="text" id="college-name" placeholder="Enter College Name">
+        <button onclick="showCollegeCard()">Search</button>
+    </div>
+    
+    <div class="card" id="college-card">
+        <h2 id="college-title"></h2>
+        <p>Select a location for a 360° view:</p>
+        <button onclick="show360View('apaji-mandir')">Apaji Mandir</button>
+        <button onclick="show360View('library')">Library</button>
+        <button onclick="show360View('auditorium')">Auditorium</button>
+    </div>
+    
+    <a-scene style="display:none;" id="virtual-tour">
+        <a-sky id="sky" src=""></a-sky>
+        <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+    
+    <script>
+        function showCollegeCard() {
+            const collegeName = document.getElementById("college-name").value;
+            if (collegeName.trim() !== "") {
+                document.getElementById("college-title").innerText = collegeName;
+                document.getElementById("college-card").style.display = "block";
+            }
+        }
+        
+        function show360View(location) {
+            let imageSrc = "";
+            if (location === "apaji-mandir") {
+                imageSrc = "https://example.com/apaji-mandir.jpg";
+            } else if (location === "library") {
+                imageSrc = "https://example.com/library.jpg";
+            } else if (location === "auditorium") {
+                imageSrc = "https://example.com/auditorium.jpg";
+            }
+            document.getElementById("sky").setAttribute("src", imageSrc);
+            document.getElementById("virtual-tour").style.display = "block";
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Campus Tour</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 50px auto;
+            width: 40%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            padding: 12px;
+            width: 80%;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .card {
+            display: none;
+            margin: 30px auto;
+            width: 60%;
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
+            margin-bottom: 10px;
+        }
+        .location-buttons button {
+            margin: 5px;
+            box-sizing: border-box;
+        }
+        a-scene {
+            display: none;
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter College Name</h2>
+        <input type="text" id="college-name" placeholder="Enter College Name">
+        <button onclick="showCollegeCard()">Search</button>
+    </div>
+    
+    <div class="card" id="college-card">
+        <h2 id="college-title"></h2>
+        <p>Select a location for a 360° view:</p>
+        <div class="location-buttons">
+            <!-- <button onclick="show360View('apaji-mandir')">Apaji Mandir</button>
+            <button onclick="show360View('library')">Library</button>
+            <button onclick="show360View('auditorium')">Auditorium</button> -->
+            <a href="/virtualcampus/VR.html" > APAJI</a>
+            
+        </div>
+    </div>
+    
+    <a-scene id="virtual-tour">
+        <a-sky id="sky" src=""></a-sky>
+        <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+    
+    <script>
+        function showCollegeCard() {
+            const collegeName = document.getElementById("college-name").value;
+            if (collegeName.trim() !== "") {
+                document.getElementById("college-title").innerText = collegeName;
+                document.getElementById("college-card").style.display = "block";
+            }
+        }
+        
+        function show360View(location) {
+            let imageSrc = "";
+            if (location === "apaji-mandir") {
+                imageSrc = "";
+            } else if (location === "library") {
+                imageSrc = "https://example.com/library.jpg";
+            } else if (location === "auditorium") {
+                imageSrc = "https://example.com/auditorium.jpg";
+            }
+            document.getElementById("sky").setAttribute("src", imageSrc);
+            document.getElementById("virtual-tour").style.display = "block";
+        }
+    </script>
+</body>
+</html>
+

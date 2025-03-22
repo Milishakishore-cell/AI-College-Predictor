@@ -1,0 +1,457 @@
+<!-- <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>College Predictor</h1>
+        <form id="prediction-form">
+            <input type="number" id="class_10_gpa" placeholder="Class 10 GPA (0 to 10)" step="0.1" required>
+            <input type="number" id="class_12_gpa" placeholder="Class 12 GPA (0 to 10)" step="0.1" required>
+            <input type="number" id="jee_mains_rank" placeholder="JEE Mains Rank" required>
+            <input type="number" id="jee_advanced_rank" placeholder="JEE Advanced Rank" required>
+            <input type="number" id="neet_rank" placeholder="NEET Rank" required>
+            <input type="number" id="sat_score" placeholder="SAT Score" required>
+            <input type="number" id="extracurriculars" placeholder="Extracurricular Activities" required>
+            <select id="category" required>
+                <option value="General">General</option>
+                <option value="OBC">OBC</option>
+                <option value="SC">SC</option>
+                <option value="ST">ST</option>
+            </select>
+            <select id="state_of_domicile" required>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+            </select>
+            <select id="preferred_branch" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Medicine">Medicine</option>
+                <option value="Electrical">Electrical</option>
+            </select>
+            <button type="submit">Predict College</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("prediction-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Get user input
+            const inputData = {
+                class_10_gpa: parseFloat(document.getElementById("class_10_gpa").value),
+                class_12_gpa: parseFloat(document.getElementById("class_12_gpa").value),
+                jee_mains_rank: parseInt(document.getElementById("jee_mains_rank").value),
+                jee_advanced_rank: parseInt(document.getElementById("jee_advanced_rank").value),
+                neet_rank: parseInt(document.getElementById("neet_rank").value),
+                sat_score: parseInt(document.getElementById("sat_score").value),
+                extracurriculars: parseInt(document.getElementById("extracurriculars").value),
+                category: document.getElementById("category").value,
+                state_of_domicile: document.getElementById("state_of_domicile").value,
+                preferred_branch: document.getElementById("preferred_branch").value
+            };
+
+            // Send input data to the Flask API
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(inputData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                document.getElementById("result").innerText = `Predicted College: ${data.prediction}`;
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
+ -->
+ <!-- <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>College Predictor</title>
+ </head>
+ <body>
+     <h1>College Predictor</h1>
+     <form id="prediction-form">
+         <input type="number" id="class_10_gpa" placeholder="Class 10 GPA (0 to 10)" step="0.1" required>
+         <input type="number" id="class_12_gpa" placeholder="Class 12 GPA (0 to 10)" step="0.1" required>
+         <input type="number" id="jee_mains_rank" placeholder="JEE Mains Rank" required>
+         <input type="number" id="jee_advanced_rank" placeholder="JEE Advanced Rank" required>
+         <input type="number" id="neet_rank" placeholder="NEET Rank" required>
+         <input type="number" id="sat_score" placeholder="SAT Score" required>
+         <input type="number" id="extracurriculars" placeholder="Extracurricular Activities" required>
+         <select id="category" required>
+             <option value="General">General</option>
+             <option value="OBC">OBC</option>
+             <option value="SC">SC</option>
+             <option value="ST">ST</option>
+         </select>
+         <select id="state_of_domicile" required>
+             <option value="Maharashtra">Maharashtra</option>
+             <option value="Delhi">Delhi</option>
+             <option value="Karnataka">Karnataka</option>
+             <option value="Tamil Nadu">Tamil Nadu</option>
+         </select>
+         <select id="preferred_branch" required>
+             <option value="Computer Science">Computer Science</option>
+             <option value="Mechanical">Mechanical</option>
+             <option value="Medicine">Medicine</option>
+             <option value="Electrical">Electrical</option>
+         </select>
+         <button type="submit">Predict College</button>
+     </form>
+     <div id="result"></div>
+ 
+     <script>
+         document.getElementById("prediction-form").addEventListener("submit", async (e) => {
+             e.preventDefault();
+ 
+             // Get user input
+             const inputData = {
+                 class_10_gpa: parseFloat(document.getElementById("class_10_gpa").value),
+                 class_12_gpa: parseFloat(document.getElementById("class_12_gpa").value),
+                 jee_mains_rank: parseInt(document.getElementById("jee_mains_rank").value),
+                 jee_advanced_rank: parseInt(document.getElementById("jee_advanced_rank").value),
+                 neet_rank: parseInt(document.getElementById("neet_rank").value),
+                 sat_score: parseInt(document.getElementById("sat_score").value),
+                 extracurriculars: parseInt(document.getElementById("extracurriculars").value),
+                 category: document.getElementById("category").value,
+                 state_of_domicile: document.getElementById("state_of_domicile").value,
+                 preferred_branch: document.getElementById("preferred_branch").value
+             };
+ 
+             // Send input data to the Flask API
+             try {
+                 const response = await fetch("http://127.0.0.1:5000/predict-college", {
+                     method: "POST",
+                     headers: {
+                         "Content-Type": "application/json"
+                     },
+                     body: JSON.stringify(inputData)
+                 });
+ 
+                 if (!response.ok) {
+                     throw new Error(`HTTP error! Status: ${response.status}`);
+                 }
+ 
+                 const data = await response.json();
+                 document.getElementById("result").innerText = `Predicted College: ${data.prediction}`;
+             } catch (error) {
+                 console.error("Error:", error);
+                 document.getElementById("result").innerText = `Error: ${error.message}`;
+             }
+         });
+     </script>
+ </body>
+ </html> --> 
+ <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>College Predictor</title>
+      <style>
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  
+          * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: 'Poppins', sans-serif;
+          }
+  
+          body {
+              background: linear-gradient(to right, #141e30, #243b55);
+              height: 100vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+          }
+  
+          .container {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 30px;
+              border-radius: 15px;
+              backdrop-filter: blur(10px);
+              box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+              text-align: center;
+              width: 400px;
+              animation: fadeIn 1s ease-in-out;
+          }
+  
+          h1 {
+              color: white;
+              margin-bottom: 20px;
+              font-size: 24px;
+          }
+  
+          form {
+              display: flex;
+              flex-direction: column;
+          }
+  
+          input, select {
+              width: 100%;
+              padding: 12px;
+              margin: 8px 0;
+              border: none;
+              border-radius: 10px;
+              background: rgba(255, 255, 255, 0.2);
+              color: white;
+              font-size: 16px;
+              transition: 0.3s;
+          }
+  
+          input::placeholder, select {
+              color: rgba(0, 0, 0, 0.7);
+          }
+  
+          input:focus, select:focus {
+              background: rgba(12, 213, 235, 0.3);
+              outline: none;
+              box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+          }
+  
+          button {
+              background: #4CAF50;
+              color: white;
+              padding: 12px;
+              border: none;
+              border-radius: 10px;
+              font-size: 18px;
+              cursor: pointer;
+              margin-top: 10px;
+              transition: 0.3s ease-in-out;
+          }
+  
+          button:hover {
+              background: #45a049;
+              transform: scale(1.05);
+          }
+  
+          #result {
+              margin-top: 20px;
+              color: white;
+              font-weight: bold;
+              font-size: 18px;
+          }
+  
+          /* Animations */
+          @keyframes fadeIn {
+              from {
+                  opacity: 0;
+                  transform: translateY(-20px);
+              }
+              to {
+                  opacity: 1;
+                  transform: translateY(0);
+              }
+          }
+  
+          /* Responsive Design */
+          @media (max-width: 450px) {
+              .container {
+                  width: 90%;
+              }
+          }
+  
+          .hidden {
+              display: none;
+          }
+      </style>
+  </head>
+  <body>
+  
+      <div class="container">
+          <h1>College Predictor</h1>
+          <form id="prediction-form">
+              <select id="exam_type" required>
+                  <option value="" disabled selected>Select Exam Type</option>
+                  <option value="jee">JEE Mains</option>
+                  <option value="neet">NEET</option>
+                  <option value="sat">SAT</option>
+              </select>
+  
+              <div id="common-fields">
+                  <input type="number" id="class_10_gpa" placeholder="Class 10 GPA (0 to 10)" step="0.1" required>
+                  <input type="number" id="class_12_gpa" placeholder="Class 12 GPA (0 to 10)" step="0.1" required>
+                  <input type="number" id="extracurriculars" placeholder="Extracurricular Activities (0-10)" required>
+                  
+                  <select id="category" required>
+                      <option value="" disabled selected>Category</option>
+                      <option value="General">General</option>
+                      <option value="OBC">OBC</option>
+                      <option value="SC">SC</option>
+                      <option value="ST">ST</option>
+                  </select>
+  
+                  <select id="state_of_domicile" required>
+                      <option value="" disabled selected>State of Domicile</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                  </select>
+  
+                  <select id="preferred_branch" required>
+                      <option value="" disabled selected>Preferred Branch</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Mechanical">Mechanical</option>
+                      <option value="Medicine">Medicine</option>
+                      <option value="Electrical">Electrical</option>
+                  </select>
+              </div>
+  
+              <input type="number" id="jee_mains_rank" class="hidden" placeholder="JEE Mains Rank">
+              <input type="number" id="neet_rank" class="hidden" placeholder="NEET Rank">
+              <input type="number" id="sat_score" class="hidden" placeholder="SAT Score">
+              
+              <button type="submit">Predict College</button>
+          </form>
+          
+          <div id="result"></div>
+      </div>
+  
+      <script>
+          document.getElementById("exam_type").addEventListener("change", function () {
+              let jeeField = document.getElementById("jee_mains_rank");
+              let neetField = document.getElementById("neet_rank");
+              let satField = document.getElementById("sat_score");
+  
+              jeeField.classList.add("hidden");
+              neetField.classList.add("hidden");
+              satField.classList.add("hidden");
+  
+              if (this.value === "jee") {
+                  jeeField.classList.remove("hidden");
+                  jeeField.required = true;
+                  neetField.required = false;
+                  satField.required = false;
+              } else if (this.value === "neet") {
+                  neetField.classList.remove("hidden");
+                  neetField.required = true;
+                  jeeField.required = false;
+                  satField.required = false;
+              } else if (this.value === "sat") {
+                  satField.classList.remove("hidden");
+                  satField.required = true;
+                  jeeField.required = false;
+                  neetField.required = false;
+              }
+          });
+  
+          document.getElementById("prediction-form").addEventListener("submit", async (e) => {
+              e.preventDefault();
+  
+              const inputData = {
+                  class_10_gpa: parseFloat(document.getElementById("class_10_gpa").value),
+                  class_12_gpa: parseFloat(document.getElementById("class_12_gpa").value),
+                  extracurriculars: parseInt(document.getElementById("extracurriculars").value),
+                  category: document.getElementById("category").value,
+                  state_of_domicile: document.getElementById("state_of_domicile").value,
+                  preferred_branch: document.getElementById("preferred_branch").value,
+                  exam_type: document.getElementById("exam_type").value,
+                  jee_mains_rank: parseInt(document.getElementById("jee_mains_rank").value) || null,
+                  neet_rank: parseInt(document.getElementById("neet_rank").value) || null,
+                  sat_score: parseInt(document.getElementById("sat_score").value) || null
+              };
+              try {
+                 const response = await fetch("http://127.0.0.1:5000/predict-college", {
+                     method: "POST",
+                     headers: {
+                         "Content-Type": "application/json"
+                     },
+                     body: JSON.stringify(inputData)
+                 });
+ 
+                 if (!response.ok) {
+                     throw new Error(`HTTP error! Status: ${response.status}`);
+                 }
+ 
+                 const data = await response.json();
+                 document.getElementById("result").innerText = `Predicted College: ${data.prediction}`;
+             } catch (error) {
+                 console.error("Error:", error);
+                 document.getElementById("result").innerText = `Error: ${error.message}`;
+             }
+         });
+     </script>
+ </body>
+ </html> 
+  
+            <!-- //   document.getElementById("result").innerText = `Processing prediction for ${inputData.exam_type}...`;
+          });
+      </script>
+  
+  </body>
+  </html> --> 
+  

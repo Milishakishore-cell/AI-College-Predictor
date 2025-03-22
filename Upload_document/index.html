@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #004e92, #000428); color: white; text-align: center; padding: 20px; }
+        h1 { margin-bottom: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .upload-section { padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; margin-bottom: 20px; }
+        input[type="file"] { padding: 10px; background: white; color: black; border-radius: 5px; }
+        button { padding: 10px; background: #ff9800; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .college-list { margin-top: 20px; text-align: left; }
+        .college-item { padding: 10px; background: rgba(255, 255, 255, 0.1); margin: 10px 0; border-radius: 5px; }
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>College Recommendation System</h1>
+    <div class="container">
+        <div class="upload-section">
+            <h2>Upload Your Marksheet</h2>
+            <input type="file" id="marksheet" accept=".pdf,.jpg,.png">
+            <button onclick="uploadMarksheet()">Upload & Analyze</button>
+        </div>
+        <h2>Recommended Colleges</h2>
+        <div id="collegeList" class="college-list"></div>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+        function uploadMarksheet() {
+            const file = document.getElementById("marksheet").files[0];
+            if (!file) { alert("Please upload a marksheet!"); return; }
+
+            const formData = new FormData();
+            formData.append("marksheet", file);
+
+            fetch("http://localhost:5000/analyze", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayColleges(data.colleges);
+                displayChart(data.colleges);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function displayColleges(colleges) {
+            const collegeList = document.getElementById("collegeList");
+            collegeList.innerHTML = "";
+            colleges.forEach(college => {
+                collegeList.innerHTML += `
+                    <div class="college-item">
+                        <h3>${college.name}</h3>
+                        <p><strong>Fees:</strong> ${college.fees}</p>
+                        <p><strong>Placement:</strong> ${college.placement}%</p>
+                        <p><strong>Ranking:</strong> ${college.ranking}</p>
+                        <p><strong>Scholarships:</strong> ${college.scholarships}</p>
+                        <a href="${college.virtualTour}" target="_blank">🔗 Virtual Tour</a>
+                    </div>
+                `;
+            });
+        }
+
+        function displayChart(colleges) {
+            const ctx = document.getElementById("chart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: colleges.map(c => c.name),
+                    datasets: [
+                        { label: "Fees", data: colleges.map(c => c.fees), backgroundColor: "#ff6384" },
+                        { label: "Placement (%)", data: colleges.map(c => c.placement), backgroundColor: "#36a2eb" },
+                        { label: "Ranking", data: colleges.map(c => c.ranking), backgroundColor: "#ffce56" }
+                    ]
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banasthali Vidyapith Virtual Tour</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #canvas-container { width: 100vw; height: 100vh; position: relative; }
+        .location-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: rgba(255, 165, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+    
+    <div class="location-buttons">
+        <button onclick="changeScene('library')">Library</button>
+        <button onclick="changeScene('hostel')">Hostel</button>
+        <button onclick="changeScene('sports')">Sports Complex</button>
+        <button onclick="changeScene('main_gate')">Main Gate</button>
+    </div>
+
+    <script>
+        let scene, camera, renderer, sphere, textureLoader;
+        
+        function init(sceneImage) {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 0.1); 
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById("canvas-container").appendChild(renderer.domElement);
+
+            // Texture Loader
+            textureLoader = new THREE.TextureLoader();
+            textureLoader.load(sceneImage, function(texture) {
+                let sphereGeometry = new THREE.SphereGeometry(500, 60, 40);
+                sphereGeometry.scale(-1, 1, 1);
+                let sphereMaterial = new THREE.MeshBasicMaterial({ map: texture });
+                sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                scene.add(sphere);
+            });
+
+            // Mouse Control
+            let controls = { x: 0, y: 0, isDragging: false };
+            document.addEventListener("mousedown", (e) => { controls.isDragging = true; controls.x = e.clientX; controls.y = e.clientY; });
+            document.addEventListener("mousemove", (e) => { if (controls.isDragging) { camera.rotation.y -= (e.clientX - controls.x) * 0.002; camera.rotation.x -= (e.clientY - controls.y) * 0.002; controls.x = e.clientX; controls.y = e.clientY; } });
+            document.addEventListener("mouseup", () => { controls.isDragging = false; });
+
+            // Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // Change Scene Function
+        function changeScene(location) {
+            let locations = {
+                "library": "https://example.com/library-360.jpg",
+                "hostel": "https://example.com/hostel-360.jpg",
+                "sports": "https://example.com/sports-360.jpg",
+                "main_gate": "https://example.com/main-gate-360.jpg"
+            };
+            scene.remove(sphere);
+            textureLoader.load(locations[location], function(texture) {
+                sphere.material.map = texture;
+                sphere.material.needsUpdate = true;
+            });
+        }
+
+        // Initialize the first scene
+        init("https://example.com/main-gate-360.jpg");
+
+    </script>
+</body>
+</html>

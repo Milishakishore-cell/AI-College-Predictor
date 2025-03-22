@@ -1,0 +1,203 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Compare Colleges</h2>
+        <input type="text" id="college1" placeholder="Enter first college name">
+        <input type="text" id="college2" placeholder="Enter second college name">
+        <button onclick="compareColleges()">Compare</button>
+        <canvas id="comparisonChart"></canvas>
+    </div>
+
+    <script>
+        function compareColleges() {
+            const college1 = document.getElementById('college1').value;
+            const college2 = document.getElementById('college2').value;
+
+            if (!college1 || !college2) {
+                alert("Please enter both college names.");
+                return;
+            }
+
+            // Mock data for comparison (in real scenario, fetch from API)
+            const collegeData = {
+                "IIT Delhi": { fees: 200000, placements: 90 },
+                "IIT Bombay": { fees: 220000, placements: 92 },
+                "BITS Pilani": { fees: 180000, placements: 85 },
+                "NIT Trichy": { fees: 150000, placements: 80 }
+            };
+
+            const data1 = collegeData[college1] || { fees: Math.random() * 200000, placements: Math.random() * 100 };
+            const data2 = collegeData[college2] || { fees: Math.random() * 200000, placements: Math.random() * 100 };
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            if (window.myChart) window.myChart.destroy();
+
+            window.myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fees (INR)', 'Placement %'],
+                    datasets: [
+                        {
+                            label: college1,
+                            data: [data1.fees, data1.placements],
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                        },
+                        {
+                            label: college2,
+                            data: [data2.fees, data2.placements],
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                        }
+                    ]
+                }
+            });
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e3f2fd;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 20px auto;
+            width: 50%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 80%;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>College Comparison</h2>
+        <input type="text" id="college1" placeholder="Enter First College Name">
+        <input type="text" id="college2" placeholder="Enter Second College Name">
+        <button onclick="compareColleges()">Compare</button>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+    </div>
+
+    <script>
+        async function compareColleges() {
+            const college1 = document.getElementById("college1").value;
+            const college2 = document.getElementById("college2").value;
+
+            const response = await fetch("http://127.0.0.1:5000/compare", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ college1, college2 })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fees (LPA)', 'Placement %', 'Ranking'],
+                    datasets: [
+                        {
+                            label: data.college1.name,
+                            data: [data.college1.fees, data.college1.placement, data.college1.ranking],
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                        },
+                        {
+                            label: data.college2.name,
+                            data: [data.college2.fees, data.college2.placement, data.college2.ranking],
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

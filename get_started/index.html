@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced File Upload</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #003c8f, #0057d9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+        .upload-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            width: 350px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .custom-file-upload:hover {
+            background: #0057d9;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        #file-name {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #00aaff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0088cc;
+        }
+        #upload-status {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload Your Marksheet</h2>
+        <form id="upload-form">
+            <label for="file-input" class="custom-file-upload">
+                Choose File
+            </label>
+            <input type="file" id="file-input" accept=".pdf, .jpg, .png" required>
+            <span id="file-name">No file chosen</span>
+            <button type="submit">Upload</button>
+        </form>
+        <div id="upload-status"></div>
+    </div>
+    
+    <script>
+        document.getElementById("file-input").addEventListener("change", function() {
+            const fileName = this.files[0] ? this.files[0].name : "No file chosen";
+            document.getElementById("file-name").innerText = fileName;
+        });
+
+        document.getElementById("upload-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("upload-status").innerText = "Uploading...";
+            
+            setTimeout(() => {
+                document.getElementById("upload-status").innerText = "File uploaded successfully!";
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

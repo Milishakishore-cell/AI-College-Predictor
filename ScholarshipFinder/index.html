@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scholarship Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results h2 {
+            color: #007bff;
+        }
+        .results ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .results li {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scholarship Finder</h1>
+        <form id="scholarshipForm">
+            <label for="basis">Select Scholarship Basis:</label>
+            <select id="basis" name="basis" required>
+                <option value="">--Select--</option>
+                <option value="class12">Class 12 Marks</option>
+                <option value="jee">JEE Mains Rank</option>
+                <option value="jee_advanced">JEE Advanced Rank</option>
+                <option value="neet">NEET Rank</option>
+                <option value="cat">CAT Percentile</option>
+                <option value="clat">CLAT Rank</option>
+                <option value="sat">SAT Score</option>
+                <option value="gre">GRE Score</option>
+                <option value="sports">Sports Achievements</option>
+                <option value="arts">Arts and Culture</option>
+            </select>
+
+            <div id="marksInput">
+                <label for="marks">12 Marks(%): </label>
+                <input type="number" id="marks" name="marks">
+            </div>
+
+            <div id="rankInput" style="display: none;">
+                <label for="rank">Rank:</label>
+                <input type="number" id="rank" name="rank">
+            </div>
+
+            <div id="percentileInput" style="display: none;">
+                <label for="percentile">Percentile:</label>
+                <input type="number" id="percentile" name="percentile">
+            </div>
+
+            <div id="scoreInput" style="display: none;">
+                <label for="score">Score:</label>
+                <input type="number" id="score" name="score">
+            </div>
+
+            <div id="incomeInput">
+                <label for="income">Family Income (₹):</label>
+                <input type="number" id="income" name="income">
+            </div>
+
+            <div id="achievementsInput">
+                <label for="achievements">Achievements:</label>
+                <input type="text" id="achievements" name="achievements" placeholder="e.g., sports, arts">
+            </div>
+
+            <button type="submit">Find Scholarships</button>
+        </form>
+
+        <div class="results" id="results">
+            <h2>Results:</h2>
+            <ul id="resultsList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('basis').addEventListener('change', function () {
+            const marksInput = document.getElementById('marksInput');
+            const rankInput = document.getElementById('rankInput');
+            const percentileInput = document.getElementById('percentileInput');
+            const scoreInput = document.getElementById('scoreInput');
+            const incomeInput = document.getElementById('incomeInput');
+            const achievementsInput = document.getElementById('achievementsInput');
+
+            // Hide all inputs initially
+            marksInput.style.display = 'none';
+            rankInput.style.display = 'none';
+            percentileInput.style.display = 'none';
+            scoreInput.style.display = 'none';
+            incomeInput.style.display = 'none';
+            achievementsInput.style.display = 'none';
+
+            // Show relevant inputs based on selected basis
+            if (this.value === 'class12') {
+                marksInput.style.display = 'block';
+                incomeInput.style.display = 'block';
+                achievementsInput.style.display = 'block';
+            } else if (this.value === 'jee' || this.value === 'jee_advanced' || this.value === 'neet' || this.value === 'clat') {
+                rankInput.style.display = 'block';
+                incomeInput.style.display = 'block';
+                achievementsInput.style.display = 'block';
+            } else if (this.value === 'cat') {
+                percentileInput.style.display = 'block';
+                incomeInput.style.display = 'block';
+                achievementsInput.style.display = 'block';
+            } else if (this.value === 'sat' || this.value === 'gre') {
+                scoreInput.style.display = 'block';
+                incomeInput.style.display = 'block';
+                achievementsInput.style.display = 'block';
+            } else if (this.value === 'sports' || this.value === 'arts') {
+                achievementsInput.style.display = 'block';
+            } else if (this.value === 'income') {
+                incomeInput.style.display = 'block';
+            }
+        });
+
+        document.getElementById('scholarshipForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const basis = document.getElementById('basis').value;
+            const marks = document.getElementById('marks').value;
+            const rank = document.getElementById('rank').value;
+            const percentile = document.getElementById('percentile').value;
+            const score = document.getElementById('score').value;
+            const income = document.getElementById('income').value;
+            const achievements = document.getElementById('achievements').value;
+
+            // Send data to backend
+            const response = await fetch('http://localhost:5000/find-scholarships', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ basis, marks, rank, percentile, score, income, achievements })
+            });
+
+            const scholarships = await response.json();
+
+            // Display results
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = scholarships.map(scholarship => `
+                <li>
+                    <strong>${scholarship.name}</strong><br>
+                    Eligibility: ${scholarship.eligibility}<br>
+                    Amount: ${scholarship.amount}<br>
+                    Deadline: ${scholarship.deadline}
+                </li>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
+
